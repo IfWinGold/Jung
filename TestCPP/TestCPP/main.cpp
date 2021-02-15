@@ -1,9 +1,9 @@
-#include<iostream>
+ï»¿#include<iostream>
 
 using namespace std;
 
 void main()
 {
-	//¼¼¹øÂ° Ä¿¹Ô!
+	//ì„¸ë²ˆì§¸ ì»¤ë°‹!
 	cout << "Third Commit" << endl;
 }
