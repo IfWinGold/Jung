@@ -387,7 +387,7 @@ void C_Store::Show(C_Player* player, C_Gamemanager* gamemanager)
 			player->Back();
 			return;
 		case 1: //HP포션
-			if (player->getgold() <= 10)
+			if (player->getgold() < 10)
 			{
 				cout << "\a(!)소지금이 부족합니다." << endl;
 				Sleep(1000);
@@ -401,7 +401,7 @@ void C_Store::Show(C_Player* player, C_Gamemanager* gamemanager)
 			}
 			break;
 		case 2://MP포션
-			if (player->getgold() <= 10)
+			if (player->getgold() < 10)
 			{
 				cout << "\a(!)소지금이 부족합니다." << endl;
 				Sleep(1000);
@@ -415,7 +415,7 @@ void C_Store::Show(C_Player* player, C_Gamemanager* gamemanager)
 			}
 			break;
 		case 3://짱돌
-			if (player->getgold() <= 40)
+			if (player->getgold() < 40)
 			{
 				cout << "\a(!)소지금이 부족합니다." << endl;
 				Sleep(1000);
@@ -429,7 +429,7 @@ void C_Store::Show(C_Player* player, C_Gamemanager* gamemanager)
 			}
 			break;
 		case 4:
-			if (player->getgold() <= 100)
+			if (player->getgold() < 100)
 			{
 				cout << "\a(!)소지금이 부족합니다." << endl;
 				Sleep(1000);
@@ -443,7 +443,7 @@ void C_Store::Show(C_Player* player, C_Gamemanager* gamemanager)
 			}
 			break;
 		case 5:
-			if (player->getgold() <= 500)
+			if (player->getgold() < 500)
 			{
 				cout << "\a(!)소지금이 부족합니다." << endl;
 				Sleep(1000);
@@ -457,7 +457,7 @@ void C_Store::Show(C_Player* player, C_Gamemanager* gamemanager)
 			}
 			break;
 		case 6:
-			if (player->getgold() <= 500)
+			if (player->getgold() < 500)
 			{
 				cout << "\a(!)소지금이 부족합니다." << endl;
 				Sleep(1000);
@@ -471,7 +471,7 @@ void C_Store::Show(C_Player* player, C_Gamemanager* gamemanager)
 			}
 			break;
 		case 7:
-			if (player->getgold() <= 500)
+			if (player->getgold() < 500)
 			{
 				cout << "\a(!)소지금이 부족합니다." << endl;
 				Sleep(1000);
