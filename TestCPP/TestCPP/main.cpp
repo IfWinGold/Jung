@@ -4,6 +4,6 @@ using namespace std;
 
 void main()
 {
-	//Ã¹ Ä¿¹Ô!
-	cout << "First Commit" << endl;
+	//µÎ¹øÂ° Ä¿¹Ô!
+	cout << "Second Commit" << endl;
 }
