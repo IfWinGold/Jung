@@ -35,4 +35,8 @@ public:
 	afx_msg void OnBnClickedButtonTest();
 	CString m_strEdit;
 	CStatic m_staticTest;
+	afx_msg void OnEnChangeEdit2();
+	afx_msg void OnEnChangeEdit1();
+	// //이름 입력
+	CEdit m_stredit2;
 };
