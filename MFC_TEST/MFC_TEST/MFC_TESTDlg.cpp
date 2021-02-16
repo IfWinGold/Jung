@@ -53,6 +53,7 @@ END_MESSAGE_MAP()
 CMFCTESTDlg::CMFCTESTDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_MFC_TEST_DIALOG, pParent)
 	, m_strEdit(_T("샘플테스트"))
+	, m_stredit3(_T("이름을 입력하세요."))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -63,6 +64,7 @@ void CMFCTESTDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT1, m_strEdit);
 	DDX_Control(pDX, IDC_STATIC_TEST, m_staticTest);
 	DDX_Control(pDX, IDC_EDIT2, m_stredit2);
+	DDX_Text(pDX, IDC_EDIT2, m_stredit3);
 }
 
 BEGIN_MESSAGE_MAP(CMFCTESTDlg, CDialogEx)

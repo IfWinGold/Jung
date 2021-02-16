@@ -39,4 +39,6 @@ public:
 	afx_msg void OnEnChangeEdit1();
 	// //이름 입력
 	CEdit m_stredit2;
+	// //주인공의 이름(값) 입니다.
+	CString m_stredit3;
 };
