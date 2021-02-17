@@ -41,4 +41,8 @@ public:
 	CEdit m_stredit2;
 	// //주인공의 이름(값) 입니다.
 	CString m_stredit3;
+	// //클래스 콤보박스 입니다.
+	CComboBox m_cbclass;
+	afx_msg void OnBnClickedStaticGroup();
+	CEdit m_edHP;
 };

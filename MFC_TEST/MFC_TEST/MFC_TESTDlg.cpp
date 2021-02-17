@@ -65,6 +65,8 @@ void CMFCTESTDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STATIC_TEST, m_staticTest);
 	DDX_Control(pDX, IDC_EDIT2, m_stredit2);
 	DDX_Text(pDX, IDC_EDIT2, m_stredit3);
+	DDX_Control(pDX, IDC_COMBO1_CLASS, m_cbclass);
+	DDX_Control(pDX, IDC_EDIT_HP, m_edHP);
 }
 
 BEGIN_MESSAGE_MAP(CMFCTESTDlg, CDialogEx)
@@ -74,6 +76,7 @@ BEGIN_MESSAGE_MAP(CMFCTESTDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_TEST, &CMFCTESTDlg::OnBnClickedButtonTest)
 	ON_EN_CHANGE(IDC_EDIT2, &CMFCTESTDlg::OnEnChangeEdit2)
 	ON_EN_CHANGE(IDC_EDIT1, &CMFCTESTDlg::OnEnChangeEdit1)
+	ON_BN_CLICKED(IDC_STATIC_GROUP, &CMFCTESTDlg::OnBnClickedStaticGroup)
 END_MESSAGE_MAP()
 
 
@@ -109,6 +112,11 @@ BOOL CMFCTESTDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
+	m_cbclass.InsertString(0, _T("전사"));
+	m_cbclass.InsertString(1, _T("법사"));
+	m_cbclass.InsertString(2, _T("궁사"));
+
+	m_cbclass.SetCurSel(0);
 
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
@@ -194,4 +202,10 @@ void CMFCTESTDlg::OnEnChangeEdit1()
 	// 이 알림 메시지를 보내지 않습니다.
 
 	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+
+void CMFCTESTDlg::OnBnClickedStaticGroup()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }
