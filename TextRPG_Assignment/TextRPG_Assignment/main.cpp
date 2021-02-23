@@ -3,6 +3,18 @@
 
 void main()
 {
+	/*
+	업데이트 날짜 : 2021-02-23 23:09
+
+	<해놓은것> 
+	*필드->전투 소량 구현
+
+
+	<해야할것> 
+	*void C_Field::UI 에서 
+	  방어 , 인벤토리 , 도망 구현
+	  Header.cpp -> 536 줄 
+	*/
 	C_Player* player = new C_Player;
 	C_Gamemanager* gamemanager = new C_Gamemanager;
 	//GameStart(player,gamemanager);
