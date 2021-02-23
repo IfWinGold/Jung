@@ -83,6 +83,8 @@ void C_Gamemanager::show()
 
 
 
+
+
 //C_Plyaer 
 C_Player::~C_Player()
 {
@@ -285,6 +287,21 @@ void C_Player::Back() //상황에 맞춰 메뉴를 뒤로 이동합니다.
 	this->m_Location = this->m_BackLocation;
 	system("cls");
 }
+bool C_Player::Decision(Monster* monster)
+{
+	int lvPlayer = this->getlevel();
+	int lvMonster = monster->getlevel();
+	bool temp = lvPlayer >= lvMonster;
+	return temp;
+}
+void C_Player::SetMinorhp(int n)
+{
+	this->m_hp -= n;
+}
+void C_Player::SetPlushp(int n)
+{
+	this->m_hp += n;
+}
 
 
 
@@ -331,6 +348,10 @@ int C_Village::input()
 void C_Village::Store(C_Player* player, C_Gamemanager* gamemanager)
 {
 	m_C_Store->Show(player, gamemanager);
+}
+void C_Village::Field(C_Player* player, C_Gamemanager* gamemanager)
+{
+	m_C_Field->Show(player, gamemanager);
 }
 
 
@@ -488,6 +509,194 @@ void C_Store::Show(C_Player* player, C_Gamemanager* gamemanager)
 
 	}
 }
+
+
+
+//C_Field
+
+void C_Field::Show(C_Player* player, C_Gamemanager* gamemanager)
+{
+	srand(time(NULL));
+	int random = 1;//rand() % 3 + 1;
+
+	while(1)
+	{
+		switch(random)
+		{
+		case 1:
+		{
+			Monster* born = new Born();
+			UI(player, born);
+		}
+			break;
+		case 2:
+		{
+
+		}
+			break;
+		case 3:
+		{
+
+		}
+			break;
+		}
+	}
+}
+
+void C_Field::UI(C_Player* player, Monster* monster)
+{
+	system("cls");
+	int np_count;
+	bool bp_count = false;
+	bool b_choice = false;
+	bool Attack = false;
+	Commend* commend = new Commend();
+	commend->Preemptive = player->Decision(monster);
+	//Preemptive 가 true 이면 player가 선공 아니면 후공
+
+	cout << "---------------------------------" << endl;
+	cout << endl;
+	cout << endl;
+	cout << monster->getname() << " (을)를 조우했다!" << endl;
+	cout << endl;
+	cout << endl;
+	cout << "---------------------------------" << endl;
+	Sleep(2000);
+	while (1)
+	{
+		int choice;
+		system("cls");
+		cout << "-----------------------------------" << endl;
+		monster->ShowStat();
+		cout << "-----------------------------------" << endl;
+		cout << endl;
+		if (Attack != true)
+		{
+			cout << "                VS                  " << endl;
+		}
+		else
+		{
+			if (commend->Preemptive == true)
+			{
+				if (np_count == 2)
+				{
+					cout << player->getname() << "의 공격!" << endl;
+
+				}
+				else if (np_count == 1)
+				{
+					cout << monster->getname() << "의 공격!" << endl;
+					Attack = false;
+				}
+			}
+			else
+			{
+				if (np_count == 2)
+				{
+					cout << monster->getname() << "의 공격!" << endl;
+
+				}
+				else if (np_count == 1)
+				{
+					cout << player->getname() << "의 공격!" << endl;
+					Attack = false;
+				}
+			}
+		}
+		cout << endl;
+		cout << "-----------------------------------" << endl;
+		player->ShowStat();
+		cout << "-----------------------------------" << endl;
+		cout << endl;
+		cout << endl;
+		cout << endl;
+		cout << endl;
+		cout << endl;
+		cout << "<선택>" << endl;
+		cout << "-----------------------------------" << endl;
+		cout << "1: 공격       2: 방어" << endl;
+		cout << "3: 인벤토리   4: 도망간다!" << endl;
+		cout << "-----------------------------------" << endl;
+		if (b_choice != true) //명령줄을 입력제어 할 수 있음
+		{
+			cout << "입력 : ";
+			cin >> choice;
+			if (cin.fail() || choice >= 5 || choice <= 0)
+			{
+				cout << "\a" << endl;
+				cin.clear();
+				cin.ignore(INT_MAX, '\n');
+				choice = -1;
+				cout << "b_choice = " << b_choice << endl;
+			}
+			else
+			{
+				b_choice = true;
+				switch (choice)
+				{
+				case 1:
+					choice = 0;
+					Attack = true;
+					commend->P_commend = 1;
+					commend->M_commend = rand() % 2 + 1;
+					np_count = 2;
+					bp_count = true;
+					break;
+				}
+			}
+
+		}
+		else //bp_count 중일때(bp_count = true)
+		{
+			Sleep(1000);
+			if (commend->Preemptive == true)
+			{
+				if (np_count == 2)
+				{//플레이어의 공격
+					monster->SetMinorhp(player->getatk());
+					np_count--;
+				}
+				else if (np_count == 1)
+				{//몬스터의 공격
+					player->SetMinorhp(monster->getatk());
+					Attack = false;
+					b_choice = false;
+				}
+			}
+			else
+			{
+				if (np_count == 2)
+				{//몬스터의 공격
+					player->SetMinorhp(monster->getatk());		
+					np_count--;
+				}
+				else if (np_count == 1)
+				{//플레이어의 공격
+					monster->SetMinorhp(player->getatk());
+					Attack = false;
+					b_choice = false;
+				}
+			}
+
+		}//bp_count 중일때(bp_count = true)
+			
+	}
+	delete commend;
+}
+
+
+//Monster
+
+Born::Born()
+{
+	this->name = "스켈레톤";
+	this->level = 1;
+	this->hp = 10;
+	this->mp = 10;
+	this->atk = 10;
+	this-> gold = 20;
+}
+
 
 void GameStart(C_Player* player, C_Gamemanager* manager)
 {

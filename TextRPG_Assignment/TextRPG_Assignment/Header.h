@@ -5,17 +5,28 @@
 #include<string>
 #include<vector>
 #include<Windows.h>
+#include<time.h>
+#include<queue>
 
 using namespace std;
 class C_Player;
 class C_Village;
 class C_Store;
 class C_Field;
+class Monster;
 struct S_Item;
 class C_Gamemanager;
 struct S_Gamemanager;
 
 void GameStart(C_Player* player, C_Gamemanager* manager);
+
+
+struct Commend
+{
+	bool Preemptive;//선후공 결정 참이면 플레이어가 선
+	int P_commend;
+	int M_commend;
+};
 
 struct S_Item //아이템
 {
@@ -47,8 +58,7 @@ public:
 	S_Item* itempush(int n); //아이템을 생성합니다.
 	~C_Gamemanager();
 	void show();
-
-
+	
 };
 
 
@@ -70,7 +80,12 @@ class C_Player
 
 public:
 	~C_Player();
-
+	void ShowStat()
+	{
+		cout << "LV" << m_level << "<" << m_name << ">" << endl;
+		cout << "HP: " << m_hp << endl;
+		cout << "MP: " << m_mp << endl;
+	}
 	string getname() const;
 	int getlevel() const;
 	double gethp() const;
@@ -90,8 +105,11 @@ public:
 	void setname();
 	void setlocation(int n);
 	bool setgold(int n, const char* oper); //값이 잘못될경우 false를 리턴
+	void SetPlushp(int n);
+	void SetMinorhp(int n);
 
 	void Back(); //상황에 맞춰 메뉴를 뒤로 이동합니다.
+	bool Decision(Monster* monster); //플레이어가 레벨이 더 높으면 참
 
 
 };
@@ -114,7 +132,7 @@ public:
 	void Show(); //마을의 목록을 보여줍니다.
 	int input(); //마을에서 이동할 키를 입력받습니다.
 	void Store(C_Player* player, C_Gamemanager* gamemanager);
-
+	void Field(C_Player* player, C_Gamemanager* gamemanager);
 
 };
 
@@ -129,7 +147,8 @@ class C_Field
 {
 
 public:
-	void show();
+	void Show(C_Player* player, C_Gamemanager* gamemanager);
+	void UI(C_Player* player, Monster* monster);
 
 
 };
@@ -138,76 +157,59 @@ public:
 
 class Monster abstract
 {
+protected:
 	string name;
 	int level;
 	int hp;
 	int mp;
 	int atk;
 	int gold;
+
 public:
-	virtual void ShowStat()
+	void ShowStat()
 	{
 		cout << "LV" << level << "<" << name << ">" << endl;
 		cout << "HP: " << hp << endl;
 		cout << "MP: " << mp << endl;
 	}
-	virtual int getlevel()
+	string getname()
+	{
+		return name;
+	}
+	int getlevel()
 	{
 		return level;
 	}
-	virtual int gethp()
+	int gethp()
 	{
 		return hp;
 	}
-	virtual int getmp()
+	int getmp()
 	{
 		return mp;
 	}
-	virtual int getatk()
+	int getatk()
 	{
 		return atk;
 	}
-	virtual int getgold()
+	int getgold()
 	{
 		return gold;
+	}
+	void SetMinorhp(int n)
+	{
+		hp -= n;
+	}
+	void SetPlushp(int n)
+	{
+		hp += n;
 	}
 };
 
 class Born : public Monster
 {
-	string name = "스켈레톤";
-	int level = 5;
-	int hp = 50;
-	int mp = 50;
-	int atk = 10;
-	int gold = 50;
 public:
-	virtual void ShowStat()
-	{
-		cout << "LV" << level << "<" << name << ">" << endl;
-		cout << "HP: " << hp << endl;
-		cout << "MP: " << mp << endl;
-	}
-	virtual int getlevel()
-	{
-		return level;
-	}
-	virtual int gethp()
-	{
-		return hp;
-	}
-	virtual int getmp()
-	{
-		return mp;
-	}
-	virtual int getatk()
-	{
-		return atk;
-	}
-	virtual int getgold()
-	{
-		return gold;
-	}
+	Born(); //스켈래톤이 스텟이 지정된다.
 };
 
 
