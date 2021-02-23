@@ -521,25 +521,15 @@ void C_Field::Show(C_Player* player, C_Gamemanager* gamemanager)
 
 	while(1)
 	{
-		switch(random)
+		switch (random)
 		{
 		case 1:
-		{
-			Monster* born = new Born();
+			Monster * born = new Born();
 			UI(player, born);
-		}
-			break;
-		case 2:
-		{
-
-		}
-			break;
-		case 3:
-		{
-
-		}
+			player->Back();
 			break;
 		}
+		break;
 	}
 }
 
@@ -580,12 +570,12 @@ void C_Field::UI(C_Player* player, Monster* monster)
 			{
 				if (np_count == 2)
 				{
-					cout << player->getname() << "의 공격!" << endl;
+					cout << player->getname() << "\a의 공격!" << endl;
 
 				}
 				else if (np_count == 1)
 				{
-					cout << monster->getname() << "의 공격!" << endl;
+					cout << monster->getname() << "\a의 공격!" << endl;
 					Attack = false;
 				}
 			}
@@ -593,12 +583,12 @@ void C_Field::UI(C_Player* player, Monster* monster)
 			{
 				if (np_count == 2)
 				{
-					cout << monster->getname() << "의 공격!" << endl;
+					cout << monster->getname() << "\a의 공격!" << endl;
 
 				}
 				else if (np_count == 1)
 				{
-					cout << player->getname() << "의 공격!" << endl;
+					cout << player->getname() << "\a의 공격!" << endl;
 					Attack = false;
 				}
 			}
@@ -679,7 +669,31 @@ void C_Field::UI(C_Player* player, Monster* monster)
 			}
 
 		}//bp_count 중일때(bp_count = true)
-			
+		if (monster->gethp() <= 0||player->gethp() <= 0)
+		{
+			if (monster->gethp() <= 0)
+			{
+				system("cls");
+				cout << monster->getname() << "\a(을) 처치했다!" << endl;
+
+				cout << "<보상>--------------" << endl;
+				Sleep(1000);
+				cout << "\aGOLD + " << monster->getgold() << endl;
+				Sleep(1000);
+				cout << "-------------------" << endl;
+				Sleep(1000);
+				system("cls");
+				int temp = player->getgold() + monster->getgold();
+				for (int i = player->getgold(); i != temp; i++)
+				{
+					cout << "\aGOLD : " << i;
+					system("cls");
+				}
+				player->setgold(monster->getgold(), "+");
+				break;
+			}
+		}
+
 	}
 	delete commend;
 }
