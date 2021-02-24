@@ -4,29 +4,30 @@
 void main()
 {
 	/*
-	업데이트 날짜 : 2021-02-23 23:09
+	업데이트 날짜 : 2021-02-25 00:30
 
 	<해놓은것> 
-	*필드->전투 소량 구현
+	왠만한것 전부
 
 
 	<해야할것> 
-	*void C_Field::UI 에서 
-	  방어 , 인벤토리 , 도망 구현
-	  Header.cpp -> 536 줄 
+	몬스터 추가 , 플레이어 , 마왕스킬 구현
 	*/
 	C_Player* player = new C_Player;
 	C_Gamemanager* gamemanager = new C_Gamemanager;
-	//GameStart(player,gamemanager);
+	GameStart(player,gamemanager);
 	C_Village village;
-	cout << "Test " << player->InventorySize() << endl;
-
-	int test1 = 10;
-	int test2 = 20;
-
-
 	while (1)
-	{
+	{		
+		if (player->getexp() >= player->getMAXEXP())
+		{
+			Sleep(500);
+			player->levelup();
+		}
+		else
+		{
+			player->Recovery();
+		}
 		village.Show(); //입력창을 보여줍니다.
 		player->setlocation(village.input());
 		switch (player->getlocation())

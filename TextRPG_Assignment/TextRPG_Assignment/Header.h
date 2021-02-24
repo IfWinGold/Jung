@@ -9,6 +9,8 @@
 #include<queue>
 
 using namespace std;
+
+
 class C_Player;
 class C_Village;
 class C_Store;
@@ -19,12 +21,15 @@ class C_Gamemanager;
 struct S_Gamemanager;
 
 void GameStart(C_Player* player, C_Gamemanager* manager);
+void GameOver(C_Player* player, C_Gamemanager* manager);
 
 
-struct Commend
+
+struct Command
 {
 	bool Preemptive;//선후공 결정 참이면 플레이어가 선
 	int P_commend;
+	int P_commend2;
 	int M_commend;
 };
 
@@ -68,23 +73,44 @@ class C_Player
 	vector<S_Item*>::iterator it = v_inventory.begin(); //인벤토리의 이터레이터 입니다. 
 
 	int m_Location = 0; //현재 위치를 int형으로 표시합니다.
-	int m_BackLocation = 0; //이전 위치를 int형으로 표시합니다.
-
+	int m_BackLocation = 0; //이전 위치를 int형으로 표시합니다.	
 	string m_name; //닉네임
 	int m_level = 1; //레벨
-	double m_hp = 50.00; //체력
-	double m_mp = 50.00; //마나
+	double m_hp = 100.00; //체력
+	double m_mp = 80.00; //마나
 	int m_atk = 10; //공격력
-	double m_exp = 0.0; //경험치
-	int m_gold = 100;
+	double m_exp = 90.00; //경험치
+	int m_gold = 10000000;
+
+	double m_MAXHP = 100.00; //최대체력 입니다.
+	double m_MAXMP = 80.00; //최대마나 입니다.
+	double m_MAXEXP = 100.00;
+
+	bool b_mWeapon = false;
+	bool b_mArmor = false;
+	bool b_mAccessories = false;
+	
+
 
 public:
 	~C_Player();
 	void ShowStat()
 	{
 		cout << "LV" << m_level << "<" << m_name << ">" << endl;
-		cout << "HP: " << m_hp << endl;
-		cout << "MP: " << m_mp << endl;
+		cout << "HP: " << m_hp <<"/"<<m_MAXHP<< endl;
+		cout << "MP: " << m_mp <<"/"<<m_MAXMP<< endl;
+		if (b_mWeapon == true)
+		{
+			cout << "무기 장착중(atk+30)" << endl;
+		}
+		if (b_mArmor == true)
+		{
+			cout << "방어구 장착중(데미지감소)" << endl;
+		}
+		if (b_mAccessories == true)
+		{
+			cout << "악세사리 장착중(최대HP증가)" << endl;
+		}
 	}
 	string getname() const;
 	int getlevel() const;
@@ -93,22 +119,36 @@ public:
 	int getatk() const;
 	double getexp() const;
 	int getgold() const;
-
 	int getlocation();
+	bool getArmor();
+	string getitemname(int Number);
+	double getMAXEXP() const;
+	void Recovery();
+
 
 	bool haveitem(S_Item* item); //해당 아이템을 소지하고 있는지 확인합니다.
 	int getitemsize(int type); //해당 아이템의 갯수를 리턴합니다.
 	int InventorySize(); //현재 인벤토리의 사이즈를 리턴합니다.
 	void getitem(S_Item* item); //아이템을 휙득합니다. 그 아이템을 소지하고 있으면 그 아이템의 보유수를 ++합니다.
 	void inventory(); //인벤토리를 보여줍니다.
+	bool inventory(Monster* monster,Command* command);
+
+	void UseItem(int inputNum);
+	void UseItem(int inputNum, Monster* monster);
+
+	void Arrangement();
 
 	void setname();
 	void setlocation(int n);
 	bool setgold(int n, const char* oper); //값이 잘못될경우 false를 리턴
 	void SetPlushp(int n);
 	void SetMinorhp(int n);
+	void SetPlusexp(double n);
+
+
 
 	void Back(); //상황에 맞춰 메뉴를 뒤로 이동합니다.
+	void levelup();
 	bool Decision(Monster* monster); //플레이어가 레벨이 더 높으면 참
 
 
@@ -148,7 +188,7 @@ class C_Field
 
 public:
 	void Show(C_Player* player, C_Gamemanager* gamemanager);
-	void UI(C_Player* player, Monster* monster);
+	void UI(C_Player* player, Monster* monster,C_Gamemanager* gamemanager);
 
 
 };
@@ -158,35 +198,38 @@ public:
 class Monster abstract
 {
 protected:
-	string name;
-	int level;
-	int hp;
-	int mp;
+	string m_name;
+	int m_level;
+	double m_hp;
+	double m_mp;
+	double exp;
+	double m_MAXHP;
+	double m_MAXMP;
 	int atk;
 	int gold;
 
 public:
 	void ShowStat()
 	{
-		cout << "LV" << level << "<" << name << ">" << endl;
-		cout << "HP: " << hp << endl;
-		cout << "MP: " << mp << endl;
+		cout << "LV" << m_level << "<" << m_name << ">" << endl;
+		cout << "HP: " << m_hp << "/" << m_MAXHP << endl;
+		cout << "MP: " << m_mp << "/" << m_MAXMP << endl;
 	}
 	string getname()
 	{
-		return name;
+		return m_name;
 	}
 	int getlevel()
 	{
-		return level;
+		return m_level;
 	}
 	int gethp()
 	{
-		return hp;
+		return m_hp;
 	}
 	int getmp()
 	{
-		return mp;
+		return m_mp;
 	}
 	int getatk()
 	{
@@ -196,14 +239,19 @@ public:
 	{
 		return gold;
 	}
+	double getexp()
+	{
+		return exp;
+	}
 	void SetMinorhp(int n)
 	{
-		hp -= n;
+		m_hp -= n;
 	}
 	void SetPlushp(int n)
 	{
-		hp += n;
+		m_hp += n;
 	}
+
 };
 
 class Born : public Monster
